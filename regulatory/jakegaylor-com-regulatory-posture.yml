@@ -1,0 +1,69 @@
+generated: '2026-09-19'
+method: searched
+probe: true
+source: jakegaylor.com sitemap.xml, both homepages, llms.txt, the source README, conventional-path probes on jakegaylor.com
+  and ai.jakegaylor.com 2026-09-19
+signals: {}
+note: A personal site operated by one individual. The sitemap lists a resume, role pages, projects, homelab and
+  a blog - no legal hub, privacy policy, terms, accessibility statement, subprocessor list, DPA, transparency report
+  or SBOM. Both hosts answer honest 404s on every conventional path. The README names third parties the deployed
+  server sends data to (Resend or Mailgun for email, OpenRouter or OpenAI for the LLM, PostHog for analytics, Cal.com
+  self-hosted); that is a code-level disclosure, not a published subprocessor list, and is not recorded as one.
+probed_absent:
+- signal: accessibility_conformance
+  urls:
+  - url: https://jakegaylor.com/accessibility
+    status: 404
+  - url: https://ai.jakegaylor.com/accessibility
+    status: 404
+  note: ''
+- signal: subprocessors
+  urls:
+  - url: https://jakegaylor.com/legal/subprocessors
+    status: 404
+  - url: https://ai.jakegaylor.com/legal/subprocessors
+    status: 404
+  note: README lists email/LLM/analytics providers as env-var options; not a dated subprocessor table
+- signal: incident_notification
+  urls:
+  - url: https://jakegaylor.com/legal/dpa
+    status: 404
+  - url: https://ai.jakegaylor.com/legal/dpa
+    status: 404
+  note: ''
+- signal: data_subject_request
+  urls:
+  - url: https://jakegaylor.com/privacy/requests
+    status: 404
+  - url: https://ai.jakegaylor.com/privacy/requests
+    status: 404
+  note: /privacy also 404 on both hosts
+- signal: sbom
+  urls:
+  - url: https://jakegaylor.com/security/sbom
+    status: 404
+  - url: https://ai.jakegaylor.com/security/sbom
+    status: 404
+  note: never derived - search only
+- signal: transparency_report
+  urls:
+  - url: https://jakegaylor.com/transparency
+    status: 404
+  - url: https://ai.jakegaylor.com/transparency
+    status: 404
+  note: ''
+- signal: ai_transparency
+  urls:
+  - url: https://jakegaylor.com/ai/transparency
+    status: 404
+  - url: https://ai.jakegaylor.com/ai/transparency
+    status: 404
+  note: the provider page and README do disclose that about-jake/assess-role-fit are LLM-backed (gpt-5.4-nano via
+    OpenRouter/OpenAI) with a deterministic fallback - a disclosure in docs, not a transparency page; not credited
+- signal: data_residency
+  urls:
+  - url: https://jakegaylor.com/docs/data-residency
+    status: 404
+  - url: https://ai.jakegaylor.com/docs/data-residency
+    status: 404
+  note: ''

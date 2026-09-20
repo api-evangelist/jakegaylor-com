@@ -1,0 +1,60 @@
+generated: '2026-09-19'
+method: searched
+source: agent card version, registry.npmjs.org, hub.docker.com tags, https://github.com/jhgaylor/ai-jakegaylor-com
+  (README, releases API), https://jakegaylor.com/blog/posts/my-website-is-an-agent-now/, live MCP initialize
+versioning:
+  scheme: semver on the server/package; protocol versions negotiated per request
+  current_version: 1.3.0
+  evidence: agent card version 1.3.0 == @jhgaylor/me-mcp 1.3.0 (npm, 2026-06-10); Docker image last updated 2026-08-14;
+    repository last commit 2026-08-14
+  protocols:
+    a2a: '1.0 and 0.3 on the same endpoint, chosen by the A2A-Version request header (no header => 0.3); the card
+      is served in both shapes (vary: A2A-Version)'
+    mcp: server negotiated 2024-11-05 when offered 2025-06-18; Streamable HTTP is the recommended transport, legacy
+      SSE is kept for "legacy clients"
+  policy_published: false
+  note: No written versioning or support-period policy. Backward compatibility is practised (0.3 translation layer,
+    SSE transport retained) but not promised.
+deprecation:
+  policy_published: false
+  sunset_header: false
+  deprecation_header: false
+  rfc8594: false
+  deprecated_operations: []
+  legacy_surfaces:
+  - surface: GET /sse + POST /messages (MCP SSE transport)
+    status: served, labelled "Legacy clients" on the provider page, no retirement date
+  - surface: A2A 0.3 card shape and JSON-RPC methods
+    status: 'served by translation layer; README: "most deployed clients still speak it"; no retirement date'
+status_page:
+  published: false
+  health_endpoint: null
+  note: No status page and no health endpoint were found (/status 404 on both hosts). a2aregistry.org reports its
+    own uptime check for the card; that is the registry's measurement, not the provider's.
+sla:
+  published: false
+  note: Personal site on a home-cloud k3s cluster behind Cloudflare (README "Deployment"); no uptime commitment.
+changelog:
+  published: false
+  github_releases: 0
+  note: No dated changelog; history is the git log and two blog posts (llms.txt "fifteen months ago" per the 2026-07-29
+    post; A2A added the week of 2026-07-29).
+timeline:
+- date: 2025-04
+  event: Dart me_mcp_server / dart-jakegaylor-com-mcp-server (earlier generation of the same idea)
+  source: github.com/jhgaylor repositories
+- date: '2025-04-28'
+  event: ai-jakegaylor-com repository created
+  source: GitHub API created_at
+- date: '2026-06-10'
+  event: '@jhgaylor/me-mcp 1.3.0 and @jhgaylor/candidate-mcp-server 1.4.1 published'
+  source: npm registry
+- date: '2026-07-29'
+  event: A2A agent announced ("My website is an agent now")
+  source: https://jakegaylor.com/blog/posts/my-website-is-an-agent-now/
+- date: '2026-08-14'
+  event: last image update / last repository commit
+  source: hub.docker.com, GitHub API
+- date: '2026-09-15'
+  event: static apex agent card last modified
+  source: Last-Modified header on https://jakegaylor.com/.well-known/agent-card.json

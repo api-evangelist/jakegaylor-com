@@ -1,0 +1,49 @@
+generated: '2026-09-19'
+method: probed
+format: json-rpc
+source: Live unauthenticated probes of https://ai.jakegaylor.com on 2026-09-19; there is no OpenAPI to derive from
+envelope:
+  mcp:
+    shape: '{"jsonrpc":"2.0","error":{"code":<int>,"message":"<text>"},"id":<id|null>}'
+    content_type: application/json; charset=utf-8 (errors) / text/event-stream (results)
+  a2a_jsonrpc:
+    shape: '{"jsonrpc":"2.0","id":<id>,"error":{"code":<int>,"message":"<text>"}}'
+    content_type: application/json; charset=utf-8
+    http_status: 200 even for JSON-RPC errors
+  http:
+    shape: 'Express default HTML: <pre>Cannot GET /path</pre>'
+    content_type: text/html; charset=utf-8
+    request_id_header: null
+problems:
+- code: -32000
+  status: 400
+  title: Session ID required or initialization expected
+  surface: MCP
+  observed: 'POST /mcp tools/list without mcp-session-id -> {"jsonrpc":"2.0","error":{"code":-32000,"message":"Invalid
+    request: session ID required or initialization expected"},"id":null}'
+  remediation: Call initialize first, read the mcp-session-id response header, send it on every later request, then
+    send notifications/initialized.
+- code: -32603
+  status: 200
+  title: Task not found
+  surface: A2A
+  observed: 'POST /a2a tasks/get {"id":"nonexistent-..."} -> {"error":{"code":-32603,"message":"Task not found:
+    nonexistent-..."}}'
+  remediation: Task ids come from the agent's own responses; this agent answered message/send with a message (no
+    task), so there may be nothing to poll.
+- code: HTTP_404
+  status: 404
+  title: Route not served
+  surface: HTTP
+  observed: GET /a2a, GET /openapi.json, GET /.well-known/agent.json -> text/html "Cannot GET ..."
+  remediation: /a2a and /mcp are POST endpoints; discovery lives at /.well-known/agent-card.json, /.well-known/jwks.json
+    and /llms.txt.
+graceful_degradation:
+- operation: contact_candidate / contact-jake
+  behaviour: 'README: with no email provider configured the tool "reports failure gracefully" - expect a tool result
+    describing the failure, not a transport error.'
+- operation: about-jake / assess-role-fit
+  behaviour: 'README and card: if the LLM call fails the skill returns the complete resume as markdown (and the
+    screening data for assess-role-fit) instead of an error.'
+note: Content errors on the LLM-backed skills are conveyed as fallback content rather than error objects; only transport/session
+  problems surface as JSON-RPC errors. No RFC 9457 problem+json surface exists.

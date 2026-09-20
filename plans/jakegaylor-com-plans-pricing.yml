@@ -1,0 +1,10 @@
+generated: '2026-09-19'
+method: searched
+source: https://ai.jakegaylor.com/ ("The server is already hosted and running - nothing to install"); /pricing 404
+  on jakegaylor.com and ai.jakegaylor.com
+currency: null
+model: free-personal
+plan_count: 0
+plans: []
+note: 'No plans, tiers or pricing exist and none are expected: this is an individual''s personal agent surface,
+  hosted free for recruiters'' assistants. The MIT-licensed server and npm package are free to run. An honest zero.'

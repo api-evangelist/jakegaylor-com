@@ -1,0 +1,87 @@
+generated: '2026-09-19'
+method: searched
+source: live MCP/A2A probes 2026-09-19, agent card skill descriptions, https://ai.jakegaylor.com/, https://ai.jakegaylor.com/llms.txt,
+  https://github.com/jhgaylor/ai-jakegaylor-com README
+surfaces:
+- MCP (Streamable HTTP, SSE, stdio)
+- A2A JSON-RPC (1.0 + 0.3)
+authentication:
+  style: none - anonymous on every surface
+  see: authentication/jakegaylor-com-authentication.yml
+transport:
+  mcp_session: mcp-session-id header issued on initialize, required afterwards (HTTP 400 / -32000 without it)
+  a2a_version: A2A-Version request header selects 1.0 or 0.3 semantics; absent => 0.3
+  a2a_1_0_shape: 'SendMessage with role ROLE_USER; reply {"result":{"message":{messageId, contextId, role: ROLE_AGENT,
+    parts:[{data|text, mediaType}]}}}'
+  a2a_0_3_shape: 'message/send with role user and kind: message parts; reply kind: message with parts [{kind: data},{kind:
+    text}] and a contextId'
+skill_routing:
+  style: prefix and keyword routing on the A2A text part
+  rules:
+  - prefix: 'JD:'
+    skill: assess-role-fit
+    note: or any long JD-shaped text
+  - prefix: 'BOOK: <slot ISO time> | <email> | <name> | <optional note>'
+    skill: schedule-intro-call
+    note: the only way to create the booking side effect; availability questions return open slots first
+  - prefix: 'CONTACT:'
+    skill: contact-jake
+    note: the only way to trigger email
+  - keywords: MCP
+    skill: connect-via-mcp
+  - keywords: preferences / screening data
+    skill: candidate-preferences
+  - metadata: metadata.skill = <skill id>
+    note: explicit routing alternative documented in the README
+idempotency:
+  coverage: none
+  supported: false
+  mechanism: null
+  scope: []
+  note: 'No idempotency key or replay-safe mechanism is documented on contact_candidate/contact-jake or book_intro_call/schedule-intro-call.
+    A repeated CONTACT: sends a second email; a repeated BOOK: is a second pending booking attempt counted against
+    the daily cap. Read tools are naturally idempotent.'
+dry_run:
+  mode: none
+  note: 'No dry-run/preview flag. The nearest thing is the design: bookings are created pending and only become
+    real when the operator confirms.'
+reversibility:
+  grade: none
+  na: false
+  note: Two write surfaces, no reversal operation on either. book_intro_call is gated by human confirmation (the
+    operator confirms or declines; the attendee learns the outcome by email) - a human veto on the provider side,
+    not a caller-invocable cancel - and no window is stated. contact_candidate sends email; there is no recall.
+    NEVER treat the confirmation gate as a reversal path.
+  surfaces:
+  - write: 'book_intro_call (MCP) / schedule-intro-call BOOK: (A2A)'
+    reversal: null
+    window: null
+    note: pending until the operator confirms or declines (README, card, provider page); no cancel tool; a human
+      can manage the booking on the Cal.com page returned with the slots
+  - write: 'contact_candidate (MCP) / contact-jake CONTACT: (A2A)'
+    reversal: null
+    window: null
+    note: email relay, irreversible once sent
+pagination:
+  style: none
+  note: No list surfaces beyond tools/resources/prompts listings.
+errors:
+  style: JSON-RPC error objects for transport/session faults; content faults degrade to fallback content
+  see: errors/jakegaylor-com-problem-types.yml
+rate_limits:
+  documented: daily booking-attempt cap (value unstated)
+  see: rate-limits/jakegaylor-com-rate-limits.yml
+versioning:
+  see: lifecycle/jakegaylor-com-lifecycle.yml
+caller_attribution:
+  convention: llms.txt asks every MCP caller to pass an optional caller_context (who you are, who you represent,
+    why you ask); "Identified callers hear back faster."
+  live_schema: 'not declared on any tool; every inputSchema has additionalProperties: false - a strict client cannot
+    send it'
+  see: mcp/jakegaylor-com-mcp.yml
+data_shapes:
+  screening_data: JSON with role_types, target_level, location, relocation, remote, work_authorization, compensation,
+    earliest_start, contact, book_intro_call, resume_json (keys observed 2026-09-19; values are personal and not
+    stored in this profile)
+  resume: JSON Resume at https://jakegaylor.com/resume.json (referenced by the candidate-preferences skill)
+  availability: ISO 8601 UTC start times grouped by day plus the human booking page URL (get_availability description)

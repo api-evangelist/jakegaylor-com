@@ -1,0 +1,35 @@
+generated: '2026-09-19'
+method: probed
+source: live probes 2026-09-19 of https://ai.jakegaylor.com/mcp and /a2a; agent card securitySchemes; https://github.com/jhgaylor/ai-jakegaylor-com
+  README
+summary:
+  types: []
+  public_surface: Everything. MCP initialize/tools/list/resources/list/prompts/list and A2A message/send, SendMessage
+    and tasks/get all answered with no credential on 2026-09-19.
+  oauth2: false
+  oidc: false
+  api_key: false
+  mutual_tls: false
+schemes: []
+session:
+  mcp: 'Stateful Streamable HTTP: initialize returns an mcp-session-id response header that MUST be echoed on every
+    later request; a call without it is rejected with JSON-RPC -32000 "session ID required or initialization expected"
+    (HTTP 400). This is transport state, not authentication.'
+  a2a: None. The 1.0 card declares securitySchemes {} and securityRequirements []; the 0.3 body declares none.
+identity_signals:
+  caller_context: The provider's llms.txt asks callers to say who they are via an optional caller_context argument
+    ("It is logged and read by Jake. Identified callers hear back faster.") - a voluntary attribution convention,
+    not an auth scheme, and not present in the live tool schemas (see mcp/jakegaylor-com-mcp.yml).
+  card_signature: The agent card is JWS-signed (ES256, kid jakegaylor-a2a-2026) with keys at /.well-known/jwks.json
+    - that authenticates the CARD to the caller, not the caller to the server.
+well_known:
+  oauth_authorization_server: 404
+  oauth_protected_resource: 404
+  openid_configuration: 404
+  note: Consistent with an anonymous surface; RFC 9728 metadata is not expected where no resource is protected.
+docs:
+- https://ai.jakegaylor.com/
+- https://github.com/jhgaylor/ai-jakegaylor-com
+note: 'An anonymous agent surface by design: the operator is a job candidate who wants recruiters'' agents to reach
+  him without friction. Guardrails sit on the side-effecting operations instead (explicit BOOK:/CONTACT: prefixes
+  on A2A, pending human confirmation on bookings, a daily booking-attempt cap) - see conventions/jakegaylor-com-conventions.yml.'

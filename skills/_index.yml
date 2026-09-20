@@ -1,0 +1,26 @@
+generated: '2026-09-19'
+method: generated
+api: Jake Gaylor MCP Server
+source: mcp/jakegaylor-com-mcp-introspection.json (live tools/list) + a2a/jakegaylor-com-agent-card.json
+note: No OpenAPI exists; the skills are grounded in the live MCP tools/list (names, required arguments, enums) and
+  the A2A card skill ids instead, which are the contract for this surface.
+skills:
+- name: evaluate-candidate-fit
+  file: skills/jakegaylor-com-evaluate-candidate-fit.md
+  description: Pull the resume and screening data, assess fit against a job description, generate a tailored interview
+    (read-only).
+  operations:
+  - get_resume_text
+  - get_candidate_preferences
+  - assess_role_fit
+  - generate_interview_questions
+  - A2A about-jake / candidate-preferences / assess-role-fit
+- name: schedule-intro-call
+  file: skills/jakegaylor-com-schedule-intro-call.md
+  description: Read live availability, create a pending intro-call booking, or relay a message by email - with the
+    published guardrails.
+  operations:
+  - get_availability
+  - book_intro_call
+  - contact_candidate
+  - A2A schedule-intro-call / contact-jake

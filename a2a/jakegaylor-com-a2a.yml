@@ -1,0 +1,243 @@
+generated: '2026-09-19'
+method: probed
+source: https://ai.jakegaylor.com/.well-known/agent-card.json
+discovery:
+  path: /.well-known/agent-card.json
+  canonical: true
+  host: ai.jakegaylor.com
+  note: 'Served by the Express app the provider open-sources at github.com/jhgaylor/ai-jakegaylor-com. The host
+    varies the card on the A2A-Version request header (response header "vary: A2A-Version"): a GET with no header
+    returns the 0.3-shaped translation saved here as the canonical file; a GET with "A2A-Version: 1.0" returns the
+    1.0 shape, saved alongside as a2a/jakegaylor-com-agent-card-a2a-1.0.json. The apex jakegaylor.com (GitHub Pages)
+    serves a static 1.0-shaped copy of the same card (7,032 bytes, last-modified 2026-09-15), saved as a2a/jakegaylor-com-agent-card-apex.json.
+    Ownership is not in question: provider.organization is "Jake Gaylor" with provider.url https://jakegaylor.com,
+    the interface URL sits on ai.jakegaylor.com, and the a2aregistry.org record this harvest came from lists this
+    card. The legacy /.well-known/agent.json path 404s on both hosts.'
+x-evidence:
+  fetched: '2026-09-19'
+  url: https://ai.jakegaylor.com/.well-known/agent-card.json
+  http_status: 200
+  content_type: application/json; charset=utf-8
+  body_bytes: 4683
+  body_parses_as: JSON object with AgentCard shape
+  response_headers_of_note:
+  - 'vary: A2A-Version'
+  - 'cache-control: public, max-age=3600'
+  - 'x-powered-by: Express'
+  - 'server: cloudflare'
+  corroborating_probes:
+  - url: https://ai.jakegaylor.com/.well-known/agent-card.json
+    request_header: 'A2A-Version: 1.0'
+    http_status: 200
+    note: '4,793-byte 1.0-shaped card: supportedInterfaces[] (protocolVersion 1.0 and 0.3, both JSONRPC at https://ai.jakegaylor.com/a2a),
+      securitySchemes {}, securityRequirements [], signatures[]; no top-level url/preferredTransport/protocolVersion.'
+  - url: https://jakegaylor.com/.well-known/agent-card.json
+    http_status: 200
+    note: 7,032-byte static 1.0-shaped copy on the apex (GitHub Pages), same provider, interfaces and six skills;
+      JWS signature present.
+  - url: https://ai.jakegaylor.com/.well-known/agent.json
+    http_status: 404
+    note: Express "Cannot GET" - the legacy path is not served.
+  - url: https://ai.jakegaylor.com/.well-known/jwks.json
+    http_status: 200
+    note: JWKS with one EC P-256 key, kid jakegaylor-a2a-2026, alg ES256, use sig - the jku the card signature protected
+      header names. Saved to well-known/jakegaylor-com-jwks.json.
+  - url: https://ai.jakegaylor.com/a2a
+    method: GET
+    http_status: 404
+    note: POST-only endpoint (Express "Cannot GET /a2a").
+  - url: https://ai.jakegaylor.com/a2a
+    method: POST
+    http_status: 200
+    note: 'JSON-RPC tasks/get with an unknown id returned {"error":{"code":-32603,"message":"Task not found: ..."}}
+      - a live JSON-RPC 2.0 endpoint.'
+  - url: https://ai.jakegaylor.com/a2a
+    method: POST
+    http_status: 200
+    note: '0.3 message/send (no A2A-Version header) with the text "What are Jake Gaylor''s preferences and screening
+      logistics?" returned kind: message, role: agent, a data part (structured screening JSON) and a text part,
+      with a contextId. No credential was sent. The response body is not stored here because it is personal screening
+      data.'
+  - url: https://ai.jakegaylor.com/a2a
+    method: POST
+    http_status: 200
+    note: '1.0 SendMessage with "A2A-Version: 1.0" and role ROLE_USER returned {"result":{"message":{messageId,
+      contextId, role: ROLE_AGENT, parts:[{data, mediaType},{text, mediaType}]}}} - the 1.0 envelope and part shape.'
+agent_card:
+  name: Jake Gaylor
+  description: Agent representing Jake Gaylor, a software engineer (platform engineering, Kubernetes, developer
+    tooling). Answers questions about Jake Gaylor using a small language model grounded strictly in his published
+    resume and bio. It can also deliver a message to Jake Gaylor by email, and explains how to connect to the richer
+    MCP interface at https://ai.jakegaylor.com/mcp.
+  version: 1.3.0
+  url: https://ai.jakegaylor.com/a2a
+  preferred_transport: JSONRPC
+  protocol_version: '0.3'
+  documentation_url: https://ai.jakegaylor.com
+  provider:
+    url: https://jakegaylor.com
+    organization: Jake Gaylor
+  capabilities:
+    streaming: true
+    pushNotifications: false
+  supports_authenticated_extended_card: false
+  default_input_modes:
+  - text/plain
+  default_output_modes:
+  - text/markdown
+  - text/plain
+  supported_interfaces:
+  - url: https://ai.jakegaylor.com/a2a
+    protocolBinding: JSONRPC
+    tenant: ''
+    protocolVersion: '1.0'
+  - url: https://ai.jakegaylor.com/a2a
+    protocolBinding: JSONRPC
+    tenant: ''
+    protocolVersion: '0.3'
+  signed: true
+  signature_protected_header_decoded:
+    alg: ES256
+    kid: jakegaylor-a2a-2026
+    typ: JOSE
+    jku: https://ai.jakegaylor.com/.well-known/jwks.json
+  security_schemes: null
+  skills:
+  - id: about-jake
+    name: About Jake Gaylor
+    description: Answers any question about Jake Gaylor's experience, skills, and background, grounded in his resume
+      and bio. Falls back to returning the complete resume as markdown if the answer cannot be generated.
+    tags:
+    - resume
+    - hiring
+    - background
+    - software-engineer
+    examples:
+    - Tell me about Jake Gaylor's work experience
+    - What is Jake Gaylor's background with Kubernetes?
+    input_modes:
+    - text/plain
+    output_modes:
+    - text/markdown
+  - id: candidate-preferences
+    name: Screening & Logistics
+    description: 'Structured screening data as JSON: role types, level, location, relocation, remote preference,
+      work authorization, compensation stance, availability, and machine-readable resume links (JSON Resume at https://jakegaylor.com/resume.json).
+      Ask for "preferences" or "screening data".'
+    tags:
+    - screening
+    - logistics
+    - hiring
+    - structured-data
+    examples:
+    - What are Jake Gaylor's preferences and screening logistics?
+    input_modes:
+    - text/plain
+    output_modes:
+    - application/json
+    - text/markdown
+  - id: schedule-intro-call
+    name: Schedule an Intro Call
+    description: 'Books a 30-minute intro call on Jake Gaylor''s real calendar. Ask about availability to get open
+      slots, then send `BOOK: <slot ISO time> | <your email> | <your name> | <optional note>`. Bookings are pending
+      until Jake Gaylor confirms; the booker receives the outcome by email. Humans can book directly at the booking
+      page returned with the slots.'
+    tags:
+    - scheduling
+    - calendar
+    - hiring
+    - booking
+    examples:
+    - What is Jake Gaylor's availability this week?
+    - 'BOOK: 2026-08-03T15:00:00.000Z | recruiter@acme.com | Jane Smith | Staff platform role'
+    input_modes:
+    - text/plain
+    output_modes:
+    - application/json
+    - text/markdown
+  - id: assess-role-fit
+    name: Assess Role Fit
+    description: 'Send a job description (paste it directly or prefix with "JD:") and get an honest fit assessment
+      grounded in Jake Gaylor''s resume: a direct verdict, strengths with cited evidence, gaps named plainly, a
+      logistics check against his screening data, and suggested interview questions. LLM-backed; if the model is
+      unavailable it returns the resume and screening data for the caller to assess directly.'
+    tags:
+    - hiring
+    - role-fit
+    - assessment
+    - job-description
+    examples:
+    - 'JD: Staff Platform Engineer at Acme — Kubernetes, AWS, GitOps. Requirements: ...'
+    input_modes:
+    - text/plain
+    output_modes:
+    - text/markdown
+  - id: connect-via-mcp
+    name: Connect via MCP
+    description: Returns instructions for connecting to Jake Gaylor's Model Context Protocol server, which exposes
+      his resume, links, and contact tools to MCP-capable clients. Triggered by any message mentioning MCP.
+    tags:
+    - mcp
+    - integration
+    - model-context-protocol
+    examples:
+    - How do I connect to Jake Gaylor's MCP server?
+    input_modes:
+    - text/plain
+    output_modes:
+    - text/markdown
+  - id: contact-jake
+    name: Contact Jake Gaylor
+    description: Delivers a message to Jake Gaylor by email. Start the message text with "CONTACT:" and include
+      the opportunity details plus a reply address so Jake Gaylor can respond.
+    tags:
+    - contact
+    - email
+    - hiring
+    examples:
+    - 'CONTACT: We''re hiring a staff platform engineer at Acme. Reach me at recruiter@acme.com'
+    input_modes:
+    - text/plain
+    output_modes:
+    - text/plain
+conformance:
+  spec: A2A 1.0.0
+  grade: conformant
+  checks:
+    capabilities_is_object: true
+    protocolVersion_top_level: true
+    skills_is_array: true
+    preferredTransport: true
+    defaultInputModes: true
+    defaultOutputModes: true
+  protocol_version: '0.3'
+  preferred_transport: JSONRPC
+  deviations: []
+  observations:
+  - id: hybrid-shape
+    note: The default-served card carries BOTH the 0.3 top-level url/preferredTransport/protocolVersion fields and
+      the 1.0 supportedInterfaces[]/signatures[] fields; every hard and optional check passes, so the grade is conformant.
+  - id: apex-copy-would-grade-flavored
+    note: 'The static copy on jakegaylor.com and the A2A-Version: 1.0 variant carry protocolVersion only inside
+      supportedInterfaces[] and no top-level protocolVersion; graded by the 0.3-era top-level rule those two bodies
+      would be flavored. The canonical file is the default GET, which is what an unheadered crawler receives.'
+  - id: no-securitySchemes
+    note: securitySchemes is absent on the 0.3 body and {} on the 1.0 body; both JSON-RPC probes answered anonymously,
+      so the omission matches observed behaviour.
+  note: Six skills, streaming advertised, notification callbacks not advertised, no extended card. Both protocol
+    versions were exercised live on the one endpoint and answered.
+transports:
+- binding: JSONRPC
+  url: https://ai.jakegaylor.com/a2a
+  protocol_versions:
+  - '1.0'
+  - '0.3'
+  version_negotiation: A2A-Version request header; absent header is treated as 0.3
+  probed: true
+  anonymous: true
+related_documents:
+  jwks: https://ai.jakegaylor.com/.well-known/jwks.json
+  mcp_endpoint: https://ai.jakegaylor.com/mcp
+  llms_txt: https://ai.jakegaylor.com/llms.txt
+  source: https://github.com/jhgaylor/ai-jakegaylor-com
+  announcement: https://jakegaylor.com/blog/posts/my-website-is-an-agent-now/

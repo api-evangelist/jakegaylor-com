@@ -1,0 +1,49 @@
+generated: '2026-09-19'
+method: searched
+source: https://ai.jakegaylor.com/ (client setup), https://github.com/jhgaylor/ai-jakegaylor-com (README), registry.npmjs.org
+  metadata, hub.docker.com tags API - all read 2026-09-19
+note: 'No client SDK exists and none is needed: the surfaces are MCP and A2A, spoken by generic clients. What the
+  provider publishes is the server itself, in three distributions. official: true throughout - the npm scope, the
+  GitHub account and the Docker namespace are all the provider''s (jhgaylor).'
+packages:
+- name: '@jhgaylor/me-mcp'
+  registry: npm
+  url: https://www.npmjs.com/package/@jhgaylor/me-mcp
+  repository: https://github.com/jhgaylor/ai-jakegaylor-com
+  kind: mcp-server (stdio)
+  language: TypeScript
+  official: true
+  license: MIT
+  version: 1.3.0
+  published: '2026-06-10'
+  bin: me-mcp
+  install: npx -y @jhgaylor/me-mcp
+  note: The same server as https://ai.jakegaylor.com/mcp, run locally over stdio for clients without remote MCP
+    support. Version 1.3.0 matches the live agent card version. The npmjs.com HTML page answered 403 to our crawler;
+    the registry metadata endpoint answered 200.
+- name: '@jhgaylor/candidate-mcp-server'
+  registry: npm
+  url: https://www.npmjs.com/package/@jhgaylor/candidate-mcp-server
+  repository: https://github.com/jhgaylor/node-candidate-mcp-server
+  kind: library (MCP server framework the site is built on)
+  language: TypeScript
+  official: true
+  license: MIT
+  version: 1.4.1
+  published: '2026-06-10'
+  note: Generic "candidate" MCP server library; ai.jakegaylor.com is an instance of it. The upstream repository
+    name differs from the package repository field (candidate-mcp-server vs node-candidate-mcp-server) - recorded
+    as the README states it.
+- name: jhgaylor/jake-gaylor-com-mcp-server
+  registry: docker
+  url: https://hub.docker.com/r/jhgaylor/jake-gaylor-com-mcp-server
+  repository: https://github.com/jhgaylor/ai-jakegaylor-com
+  kind: container image (the deployed server)
+  official: true
+  license: MIT
+  version: sha-0a89b47
+  published: '2026-08-14'
+  tags_count: 63
+  note: Multi-arch image built by GitHub Actions on every commit to main; tags latest, main and sha-<commit> all
+    last updated 2026-08-14 (hub.docker.com tags API). This is the deployment artifact for the home-cloud k3s cluster
+    the README describes, not a consumer package.

@@ -1,0 +1,20 @@
+generated: '2026-09-19'
+method: probed
+source: live DNS/TLS/HTTP probes of apis.yml + OpenAPI hosts
+hosts:
+- host: jakegaylor.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Nov  7 08:16:49 2026 GMT
+  hsts: false
+- host: ai.jakegaylor.com
+  https: true
+  tls_version: TLSv1.3
+  cert_expires: Oct 27 02:38:48 2026 GMT
+  hsts: false
+domains:
+- domain: jakegaylor.com
+  dnssec: false
+  caa: []
+  spf: false
+  dmarc: false

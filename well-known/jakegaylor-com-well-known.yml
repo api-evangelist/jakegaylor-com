@@ -1,0 +1,96 @@
+generated: '2026-09-19'
+method: probed
+source: live GET of each path on 2026-09-19 with a browser User-Agent
+note: 'Four hosts probed: the apex (GitHub Pages), www (does not resolve), the agent host ai.jakegaylor.com (Express
+  behind Cloudflare) and the self-hosted Cal.com booking host the source README names. None of the standard discovery
+  documents (security.txt, openid-configuration, oauth-authorization-server, oauth-protected-resource, api-catalog,
+  ai-plugin.json, mcp.json) is served anywhere. What IS served is a JWS-signed A2A agent card on two hosts and the
+  JWKS that verifies it. The MCP server is anonymous, so the absence of oauth-protected-resource metadata on the
+  MCP host is consistent rather than a gap.'
+hosts:
+- host: jakegaylor.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    note: GitHub Pages custom 404 page (9,379-byte HTML), honest 404
+  - path: /.well-known/openid-configuration
+    status: 404
+    note: GitHub Pages custom 404 page (9,379-byte HTML), honest 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    note: GitHub Pages custom 404 page (9,379-byte HTML), honest 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    note: GitHub Pages custom 404 page (9,379-byte HTML), honest 404
+  - path: /.well-known/api-catalog
+    status: 404
+    note: GitHub Pages custom 404 page (9,379-byte HTML), honest 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    note: GitHub Pages custom 404 page (9,379-byte HTML), honest 404
+  - path: /.well-known/mcp.json
+    status: 404
+    note: GitHub Pages custom 404 page (9,379-byte HTML), honest 404
+  - path: /.well-known/agent-card.json
+    status: 200
+    file: a2a/jakegaylor-com-agent-card-apex.json
+    content_type: application/json; charset=utf-8
+    bytes: 7032
+    note: Static 1.0-shaped A2A agent card, last-modified 2026-09-15; graded in a2a/jakegaylor-com-a2a.yml
+  - path: /.well-known/agent.json
+    status: 404
+    note: legacy path not served
+- host: www.jakegaylor.com
+  documents: []
+  note: 'Connection failed for every path (curl exit 000): the www label does not resolve/terminate TLS. The canonical
+    site is the apex.'
+- host: ai.jakegaylor.com
+  documents:
+  - path: /.well-known/security.txt
+    status: 404
+    note: Express "Cannot GET" HTML, honest 404
+  - path: /.well-known/openid-configuration
+    status: 404
+    note: Express "Cannot GET" HTML, honest 404
+  - path: /.well-known/oauth-authorization-server
+    status: 404
+    note: Express "Cannot GET" HTML, honest 404
+  - path: /.well-known/oauth-protected-resource
+    status: 404
+    note: Express "Cannot GET" HTML, honest 404
+  - path: /.well-known/api-catalog
+    status: 404
+    note: Express "Cannot GET" HTML, honest 404
+  - path: /.well-known/ai-plugin.json
+    status: 404
+    note: Express "Cannot GET" HTML, honest 404
+  - path: /.well-known/mcp.json
+    status: 404
+    note: Express "Cannot GET" HTML, honest 404
+  - path: /.well-known/agent-card.json
+    status: 200
+    file: a2a/jakegaylor-com-agent-card.json
+    content_type: application/json; charset=utf-8
+    bytes: 4683
+    note: A2A agent card, JWS-signed, varies on A2A-Version (0.3 shape by default, 1.0 shape on request); canonical
+      card, graded conformant in a2a/jakegaylor-com-a2a.yml
+  - path: /.well-known/agent.json
+    status: 404
+    note: legacy path not served
+  - path: /.well-known/jwks.json
+    status: 200
+    file: well-known/jakegaylor-com-jwks.json
+    content_type: application/json; charset=utf-8
+    bytes: 191
+    note: 'RFC 7517 JWKS: one EC P-256 key, kid jakegaylor-a2a-2026, alg ES256, use sig - verifies the agent card
+      signature'
+- host: cal.jakegaylor.com
+  documents:
+  - path: /.well-known/agent-card.json
+    status: 404
+    note: not served
+  - path: /.well-known/security.txt
+    status: 404
+    note: not served
+  note: Self-hosted Cal.com; the root 307-redirects to /auth/login. Backs the get_availability/book_intro_call tools;
+    not an API host of its own.

@@ -1,0 +1,82 @@
+generated: '2026-09-19'
+method: probed
+source: live probes of ai.jakegaylor.com and jakegaylor.com on 2026-09-19; agent card; JWKS; README
+standards:
+- id: a2a-0.3
+  name: Agent2Agent Protocol 0.3
+  conforms: true
+  evidence: 'Default GET of /.well-known/agent-card.json returns protocolVersion "0.3", url, preferredTransport
+    JSONRPC, capabilities object, six skills; POST /a2a message/send (no A2A-Version header) answered kind: message,
+    role: agent with data + text parts.'
+- id: a2a-1.0
+  name: Agent2Agent Protocol 1.0
+  conforms: true
+  evidence: 'GET with A2A-Version: 1.0 returns the 1.0 card shape (supportedInterfaces[] with protocolVersion 1.0
+    and 0.3, securitySchemes {}, signatures[]); POST /a2a SendMessage with A2A-Version: 1.0 and role ROLE_USER answered
+    {"result":{"message":{role: ROLE_AGENT, parts:[{data, mediaType},{text, mediaType}]}}}. Built on @a2a-js/sdk
+    per the README.'
+  caveat: The catalog grades the default-served (0.3-shaped) card; see a2a/jakegaylor-com-a2a.yml.
+- id: a2a-signed-card
+  name: A2A AgentCard JWS signature (RFC 7515) with JWKS (RFC 7517)
+  conforms: true
+  evidence: signatures[0].protected decodes to {alg ES256, kid jakegaylor-a2a-2026, typ JOSE, jku https://ai.jakegaylor.com/.well-known/jwks.json};
+    that JWKS serves one EC P-256 key with the same kid. Signature not cryptographically verified by this pass.
+- id: json-rpc-2.0
+  name: JSON-RPC 2.0
+  conforms: true
+  evidence: Both /mcp and /a2a answer with jsonrpc "2.0", echo the request id, and return error objects with numeric
+    codes (-32000, -32603).
+- id: mcp-streamable-http
+  name: MCP Streamable HTTP transport (2025-03-26+)
+  conforms: true
+  evidence: POST /mcp initialize -> 200 text/event-stream with mcp-session-id; subsequent calls require the header;
+    notifications/initialized -> 202.
+- id: mcp-sse-legacy
+  name: MCP HTTP+SSE transport (2024-11-05, deprecated upstream)
+  conforms: true
+  evidence: 'GET /sse -> 200 text/event-stream, "event: endpoint / data: /messages?sessionId=...". Kept for legacy
+    clients per the provider page.'
+- id: mcp-2024-11-05
+  name: MCP protocol revision 2024-11-05 (negotiated)
+  conforms: true
+  evidence: 'initialize offered 2025-06-18 and the server answered protocolVersion "2024-11-05" with tools/resources/prompts
+    capabilities (listChanged: true on each).'
+  caveat: Server does not advertise the 2025-03-26 or 2025-06-18 revisions even though it serves the newer transport.
+- id: llms-txt
+  name: llms.txt (llmstxt.org)
+  conforms: true
+  evidence: https://ai.jakegaylor.com/llms.txt -> 200 text/plain, 13,607 bytes.
+  caveat: The body is prose ("Core Beliefs" sections plus a "For agents" section) rather than the H1 + link-list
+    shape llmstxt.org describes, and on 2026-09-19 it opened with the line "Error fetching remote content from https://jakegaylor.com/resume.json"
+    - the server's boot-time resume fetch had failed, so the resume section was missing. Saved verbatim.
+- id: json-resume
+  name: JSON Resume schema
+  conforms: true
+  evidence: https://jakegaylor.com/resume.json -> 200 application/json with basics/meta/profiles blocks; referenced
+    by the candidate-preferences skill. Not saved (personal contact data).
+- id: oauth2
+  name: OAuth 2.0
+  conforms: false
+  evidence: No securitySchemes; /.well-known/oauth-authorization-server and oauth-protected-resource 404 on every
+    host; all calls anonymous.
+- id: oidc
+  name: OpenID Connect discovery
+  conforms: false
+  evidence: /.well-known/openid-configuration 404 on every host.
+- id: rfc9457
+  name: RFC 9457 Problem Details
+  conforms: false
+  evidence: Errors are JSON-RPC objects and Express HTML 404s; no application/problem+json.
+- id: rfc9116
+  name: RFC 9116 security.txt
+  conforms: false
+  evidence: /.well-known/security.txt 404 on jakegaylor.com, ai.jakegaylor.com and cal.jakegaylor.com.
+- id: openapi
+  name: OpenAPI
+  conforms: false
+  evidence: 'No REST API and no spec: /openapi.json, /openapi.yaml, /swagger.json, /api-docs, /docs all 404 on ai.jakegaylor.com;
+    /openapi.json 404 on the apex. Not a gap for an MCP/A2A-only surface.'
+domain_standard:
+  declared: null
+  note: Reward-only check; no market standard applies to a personal hiring agent (no HR-XML/HR Open, no SCIM). Nothing
+    asserted.

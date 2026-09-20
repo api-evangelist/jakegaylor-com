@@ -1,18 +1,95 @@
 aid: jakegaylor-com
 name: Jake Gaylor
-description: 'Jake Gaylor is a company surfaced via the API Evangelist harvest backlog (source: a2a-registry)
-  and added to the network as a stub for full-pipeline profiling.'
+description: 'Jake Gaylor is a software engineer (platform engineering, Kubernetes, developer tooling) whose personal
+  site publishes an agent-native representation of his resume. ai.jakegaylor.com serves a hosted Model Context Protocol
+  server (Streamable HTTP at /mcp, a legacy SSE transport, and the same server as the npm stdio package @jhgaylor/me-mcp)
+  with 12 tools, 6 resources and 7 prompts; an Agent2Agent (A2A) agent published at /.well-known/agent-card.json
+  - JWS-signed, served in 0.3 and 1.0 shapes negotiated on the A2A-Version header - with six skills; and an llms.txt.
+  Every surface answers anonymously: read the resume and structured screening preferences, assess role fit against
+  a job description, generate interview questions, read live intro-call availability and create a pending-confirmation
+  booking, or relay a message by email. The server is open source (MIT) at github.com/jhgaylor/ai-jakegaylor-com.'
+image: https://jakegaylor.com/images/og-card.jpg?v=7
 url: https://raw.githubusercontent.com/api-evangelist/jakegaylor-com/refs/heads/main/apis.yml
 x-type: company
 x-source: harvest:a2a-registry
-x-tier: stub
-x-tier-reason: harvest
+x-tier: profiled
+x-tier-reason: enrichment pass 2026-09-19 (local-v3; was a2a-registry harvest stub)
 specificationVersion: '0.20'
 created: '2026-09-19'
 modified: '2026-09-19'
 tags:
 - Company
-apis: []
+- Agents
+- AI Agents
+- A2A
+- MCP
+- Hiring
+- Recruiting
+- Resume
+- Scheduling
+- Personal Agent
+apis:
+- name: Jake Gaylor MCP Server
+  description: 'Hosted MCP server exposing Jake Gaylor''s resume, links and website text as resources and tools,
+    structured screening preferences, an LLM-backed role-fit assessment and interview-question generator, live intro-call
+    availability with pending-confirmation booking, and an email relay. Anonymous; Streamable HTTP (stateful, mcp-session-id)
+    with a legacy SSE transport and an npm stdio distribution. Probed live 2026-09-19: 12 tools, 6 resources, 7
+    prompts.'
+  humanURL: https://ai.jakegaylor.com/
+  baseURL: https://ai.jakegaylor.com/mcp
+  tags:
+  - MCP
+  - Agents
+  - Hiring
+  - Resume
+  - Scheduling
+  properties:
+  - type: MCPServer
+    url: mcp/jakegaylor-com-mcp.yml
+  - type: MCPServer
+    url: https://ai.jakegaylor.com/mcp
+  - type: Documentation
+    url: https://ai.jakegaylor.com/
+  - type: SourceCode
+    url: https://github.com/jhgaylor/ai-jakegaylor-com
+  - type: Authentication
+    url: authentication/jakegaylor-com-authentication.yml
+  - type: Conventions
+    url: conventions/jakegaylor-com-conventions.yml
+  - type: ErrorCatalog
+    url: errors/jakegaylor-com-problem-types.yml
+  - type: RateLimits
+    url: rate-limits/jakegaylor-com-rate-limits.yml
+  - type: AgentSkill
+    url: skills/_index.yml
+  image: https://jakegaylor.com/images/og-card.jpg?v=7
+- name: Jake Gaylor A2A Agent
+  description: 'A2A agent representing Jake Gaylor, discovered at /.well-known/agent-card.json on ai.jakegaylor.com
+    (and as a static copy on jakegaylor.com) with a JSON-RPC interface at /a2a serving protocol 1.0 and 0.3 on one
+    URL. Six skills: about-jake, candidate-preferences, schedule-intro-call, assess-role-fit, connect-via-mcp, contact-jake.
+    Streaming advertised, no notification callbacks; the card is JWS-signed (ES256) against /.well-known/jwks.json.
+    Probed live 2026-09-19: message/send and SendMessage both answered without credentials.'
+  humanURL: https://ai.jakegaylor.com/
+  baseURL: https://ai.jakegaylor.com/a2a
+  tags:
+  - A2A
+  - Agents
+  - JSON-RPC
+  - Hiring
+  properties:
+  - type: AgentCard
+    url: a2a/jakegaylor-com-a2a.yml
+  - type: AgentCard
+    url: https://ai.jakegaylor.com/.well-known/agent-card.json
+  - type: Documentation
+    url: https://ai.jakegaylor.com/
+  - type: Authentication
+    url: authentication/jakegaylor-com-authentication.yml
+  - type: Conventions
+    url: conventions/jakegaylor-com-conventions.yml
+  - type: ErrorCatalog
+    url: errors/jakegaylor-com-problem-types.yml
+  image: https://jakegaylor.com/images/og-card.jpg?v=7
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
@@ -21,3 +98,44 @@ maintainers:
 common:
 - type: Website
   url: https://jakegaylor.com/
+- type: Documentation
+  url: https://ai.jakegaylor.com/
+- type: Blog
+  url: https://jakegaylor.com/blog/
+- type: GitHubRepository
+  url: https://github.com/jhgaylor/ai-jakegaylor-com
+- type: LLMsTxt
+  url: llms/jakegaylor-com-llms.txt
+- type: LLMsTxt
+  url: https://ai.jakegaylor.com/llms.txt
+- type: WellKnown
+  url: well-known/jakegaylor-com-well-known.yml
+- type: AgentCard
+  url: a2a/jakegaylor-com-a2a.yml
+- type: MCPServer
+  url: mcp/jakegaylor-com-mcp.yml
+- type: Packages
+  url: packages/jakegaylor-com-packages.yml
+- type: Conformance
+  url: conformance/jakegaylor-com-conformance.yml
+- type: Lifecycle
+  url: lifecycle/jakegaylor-com-lifecycle.yml
+- type: Authentication
+  url: authentication/jakegaylor-com-authentication.yml
+- type: Conventions
+  url: conventions/jakegaylor-com-conventions.yml
+- type: ErrorCatalog
+  url: errors/jakegaylor-com-problem-types.yml
+- type: Plans
+  url: plans/jakegaylor-com-plans-pricing.yml
+- type: RateLimits
+  url: rate-limits/jakegaylor-com-rate-limits.yml
+- type: AgentSkill
+  url: skills/_index.yml
+- type: DomainSecurity
+  url: security/jakegaylor-com-domain-security.yml
+x-enrichment:
+  date: '2026-09-19'
+  status: enriched
+  artifacts_added: 22
+  pass: local-v3

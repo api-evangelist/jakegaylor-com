@@ -1,0 +1,25 @@
+generated: '2026-09-19'
+method: searched
+source: 'https://github.com/jhgaylor/ai-jakegaylor-com README ("Guardrails: ... a daily attempt cap"); live response
+  headers 2026-09-19'
+limit_count: 1
+limits:
+- scope: per-day booking attempts
+  applies_to:
+  - book_intro_call (MCP)
+  - 'schedule-intro-call BOOK: (A2A)'
+  window: 1 day
+  limit: null
+  burst: null
+  note: The README states a daily attempt cap on bookings and does not publish the number; the value is null because
+    it is unstated, not unchecked. How exhaustion is signalled is not documented.
+response_codes:
+  throttled: null
+  note: No 429 behaviour is documented; Cloudflare fronts the host and may apply its own limits.
+headers:
+  documented: []
+  observed: []
+  note: No RateLimit-*, X-RateLimit-* or Retry-After header appeared on the MCP initialize/tools/list or A2A responses
+    on 2026-09-19 (Cloudflare edge headers only).
+note: Request-rate limits on the read tools and on the LLM-backed tools are undocumented; the only published limit
+  is the booking cap.

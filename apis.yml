@@ -8,6 +8,21 @@ description: 'Jake Gaylor is a software engineer (platform engineering, Kubernet
   Every surface answers anonymously: read the resume and structured screening preferences, assess role fit against
   a job description, generate interview questions, read live intro-call availability and create a pending-confirmation
   booking, or relay a message by email. The server is open source (MIT) at github.com/jhgaylor/ai-jakegaylor-com.'
+deliveryModel:
+  model: saas
+  license_evidence:
+    not_product:
+    - jhgaylor/ai-jakegaylor-com
+  open_source: unknown
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: low
+  source:
+  - pricing
+  - repository-not-product
+  generated: '2026-09-25'
+  method: derived
 image: https://jakegaylor.com/images/og-card.jpg?v=7
 url: https://raw.githubusercontent.com/api-evangelist/jakegaylor-com/refs/heads/main/apis.yml
 x-type: company
@@ -139,3 +154,10 @@ x-enrichment:
   status: enriched
   artifacts_added: 22
   pass: local-v3
+x-a2a:
+  verified: true
+  probed: '2026-09-26'
+  url: "https://ai.jakegaylor.com/.well-known/agent-card.json"
+  grade: "conformant"
+  protocol_version: "0.3"
+  control: 404

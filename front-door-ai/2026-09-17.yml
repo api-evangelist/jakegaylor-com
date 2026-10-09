@@ -1,0 +1,29 @@
+# Front Door AI Index — jakegaylor-com — 2026-09-17
+# AI vocabulary counted on the provider's root page. Generated; do not edit.
+# `score` is null unless ownership is `own` — see front_door_ai.py.
+front_door_ai:
+  slug: jakegaylor-com
+  lexicon_version: '1.0'
+  probed_at: '2026-09-25'
+  host: jakegaylor.com
+  final_host: jakegaylor.com
+  ownership: own
+  owner: jakegaylor-com
+  shares_host_with: null
+  inherited_from: null
+  alias_of: null
+  verdict: scored
+  score: 2
+  band: 3
+  band_label: light
+  host_score: 2
+  density: 5.21
+  words: 384
+  tiers:
+    agentic: 0
+    core: 2
+    model: 0
+  ambiguous: 9
+  top_terms:
+    agent: 9
+    AI: 2
